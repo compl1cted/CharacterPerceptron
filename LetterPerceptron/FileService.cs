@@ -1,25 +1,23 @@
-﻿using System.Diagnostics;
-
-namespace LetterPerceptron
+﻿namespace LetterPerceptron
 {
     internal static class FileService
     {
         public static List<Character> ReadFrom(string Filepath)
         {
-            using var Reader = new StreamReader(Filepath);
+            using var reader = new StreamReader(Filepath);
             {
                 List<Character> characters = new();
-                while (!Reader.EndOfStream)
+                while (!reader.EndOfStream)
                 {
-                    var line = Reader.ReadLine();
+                    var line = reader.ReadLine();
                     if (line == null) break;
-                    var DatasetColumns = line.Split(',');
-                    char Value = char.Parse(DatasetColumns[0]);
+                    var datasetColumns = line.Split(',');
+                    char value = char.Parse(datasetColumns[0]);
 
-                    int[] Signature = new int[DatasetColumns[1].Length];
+                    int[] Signature = new int[datasetColumns[1].Length];
                     for (int i = 0; i < Signature.Length; i++)
-                        Signature[i] = DatasetColumns[1][i] - '0';
-                    characters.Add(new(Value, Signature));
+                        Signature[i] = datasetColumns[1][i] - '0';
+                    characters.Add(new(value, Signature));
                 }
                 return characters;
             }

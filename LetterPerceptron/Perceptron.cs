@@ -6,35 +6,29 @@ namespace LetterPerceptron
     {
         private readonly Neuron[] Neurons;
         private readonly float LearningRate;
-        private readonly char[] CorrespondingValues; //Array that represents each neuron's answer
-        public Perceptron(int NeuronsAmount, int ConnectionsPerNeuron, float _LearningRate)
+        private readonly List<Character> Dataset; //Array that represents each neuron's answer
+        public Perceptron(int NeuronsAmount, int ConnectionsPerNeuron, float _LearningRate, string DatasetFilepath)
         {
             Neurons = new Neuron[NeuronsAmount];
             LearningRate = _LearningRate;
+            Dataset = FileService.ReadFrom(DatasetFilepath);
             for (int i = 0; i < Neurons.Length; i++)
                 Neurons[i] = new(ConnectionsPerNeuron);
-            
-            var dataset = FileService.ReadFrom("../../../Dataset.txt");
-            CorrespondingValues = new char[NeuronsAmount];
-            for (int i = 0; i < CorrespondingValues.Length; i++)
-                CorrespondingValues[i] = dataset[i].Value;
         }
         public void AutoTest()
         {
-            var dataset = FileService.ReadFrom("../../../Dataset.txt");
             bool[] results = new bool[Neurons.Length];
-            for (int i = 0; i < dataset.Count; i++)
+            for (int i = 0; i < Dataset.Count; i++)
             {
-                var answer = Test(dataset[i].Signature);
-                results[i] = answer == dataset[i].Value;
-                Debug.WriteLine(dataset[i].Value + ":" + "Answer: " + answer + ", Result: " + results[i]);
+                var answer = Test(Dataset[i].Signature);
+                results[i] = answer == Dataset[i].Value;
+                Debug.WriteLine("Test: " + Dataset[i].Value + ";" + " Answer: " + answer + ", Result: " + results[i] + ";");
             }
         }
         public void AutoTrain(int TrainingIteratinos)
         {
-            var dataset = FileService.ReadFrom("../../../Dataset.txt");
             for (int iteration = 0; iteration < TrainingIteratinos; iteration++)
-                foreach(Character datasetItem in dataset) Train(datasetItem);
+                foreach(Character datasetItem in Dataset) Train(datasetItem);
         }
 
         public void Train(Character TrainCharacter)
@@ -42,13 +36,10 @@ namespace LetterPerceptron
             for (int i = 0; i < Neurons.Length; i++)
             {
                 float result = Neurons[i].ActivationFunction(TrainCharacter.Signature);
-                if (result == 1 ^ CorrespondingValues[i] == TrainCharacter.Value)
-                {
-                    float expectedResult = CorrespondingValues[i] == TrainCharacter.Value ? 1.0f : 0.0f;
-                    float delta = expectedResult - result;
-                    float editor = delta * LearningRate;
-                    Neurons[i].CorrectWeights(TrainCharacter.Signature, editor);
-                }
+                float expectedResult = Dataset[i].Value == TrainCharacter.Value ? 1.0f : 0.0f;
+                float delta = expectedResult - result;
+                float editor = delta * LearningRate;
+                Neurons[i].CorrectWeights(TrainCharacter.Signature, editor);
             }
         }
 
@@ -66,7 +57,7 @@ namespace LetterPerceptron
                 }
             }
             if (neuronId == -1) return '-';
-            return CorrespondingValues[neuronId];
+            return Dataset[neuronId].Value;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace LetterPerceptron
         private const int MatrixColumns = 5;
         private const int MatrixRows = 7;
         private readonly Button[,] ButtonMatrix = new Button[MatrixColumns, MatrixRows];
-        private readonly Perceptron NeuralNet = new(36, MatrixColumns * MatrixRows, 0.00001f);
+        private readonly Perceptron NeuralNet = new(36, MatrixColumns * MatrixRows, 0.00001f, "../../../Dataset.txt");
         public Form1()
         {
             InitializeComponent();
