@@ -1,4 +1,6 @@
-﻿namespace LetterPerceptron
+﻿using System.Diagnostics;
+
+namespace LetterPerceptron
 {
     internal class Neuron
     {
@@ -16,16 +18,17 @@
             return Sigmoid(WeightedSum(Value));
         }
 
-        public static float Sigmoid(float Value) {
-            return 1 / (1 + (float)Math.Exp(-Value));
+        public static float Sigmoid(float Value)
+        {
+            return (float)(1.0 / (1.0 + Math.Pow(Math.E, -Value)));
         }
 
         public float WeightedSum(int[] Input)
         {
-            float WeightedSum = 0;
+            float weightedSum = 0.0f;
             for (int i = 0; i < Input.Length; i++)
-                WeightedSum += Input[i] * Weights[i];
-            return WeightedSum;
+                weightedSum += Input[i] * Weights[i];
+            return weightedSum;
         }
         public void CorrectWeights(int[] Inputs, float Editor)
         {

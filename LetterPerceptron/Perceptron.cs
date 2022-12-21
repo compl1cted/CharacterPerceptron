@@ -14,51 +14,50 @@ namespace LetterPerceptron
             for (int i = 0; i < Neurons.Length; i++)
                 Neurons[i] = new(ConnectionsPerNeuron);
             
-            var Dataset = FileService.ReadFrom("../../../Dataset.txt");
-            CorrespondingValues= new char[NeuronsAmount];
+            var dataset = FileService.ReadFrom("../../../Dataset.txt");
+            CorrespondingValues = new char[NeuronsAmount];
             for (int i = 0; i < CorrespondingValues.Length; i++)
-                CorrespondingValues[i] = Dataset[i].Value;
+                CorrespondingValues[i] = dataset[i].Value;
         }
         public void AutoTrain(int TrainingIteratinos)
         {
-            var Dataset = FileService.ReadFrom("../../../Dataset.txt");
-            for (int Iteration = 0; Iteration < TrainingIteratinos; Iteration++)
-            {
-                foreach(Character DatasetItem in Dataset) Train(DatasetItem);
-            }
+            var dataset = FileService.ReadFrom("../../../Dataset.txt");
+            for (int iteration = 0; iteration < TrainingIteratinos; iteration++)
+                foreach(Character datasetItem in dataset) Train(datasetItem);
         }
 
         public void Train(Character TrainCharacter)
         {
             for (int i = 0; i < Neurons.Length; i++)
             {
-                while (true)
+                float result = Neurons[i].ActivationFunction(TrainCharacter.Signature);
+                if (result == 1 ^ CorrespondingValues[i] == TrainCharacter.Value)
                 {
-                    float Result = Neurons[i].ActivationFunction(TrainCharacter.Signature);
-                    float ExpectedResult = CorrespondingValues[i] == TrainCharacter.Value ? 1.0f : 0.0f;
-                    float Delta = ExpectedResult - Result;
-                    if (Delta < 0.1f && Delta > -0.1f) break;
-                    float Editor = Delta * LearningRate;
-                    Neurons[i].CorrectWeights(TrainCharacter.Signature, Editor);
+                    float expectedResult = CorrespondingValues[i] == TrainCharacter.Value ? 1.0f : 0.0f;
+                    float delta = expectedResult - result;
+                    float editor = delta * LearningRate;
+                    Neurons[i].CorrectWeights(TrainCharacter.Signature, editor);
                 }
             }
         }
 
         public char Test(int[] TestData)
         {
-            float MaxValue = 0.0f;
-            int NeuronId = -1;
+            float maxValue = 0.0f;
+            int neuronId = -1;
             for (int i = 0; i < Neurons.Length; i++)
             {
-                float Result = Neurons[i].ActivationFunction(TestData);
-                if (Result > MaxValue)
+                float result = Neurons[i].ActivationFunction(TestData);
+                for (int j =0; j < Neurons[i].Weights.Length; j++) Debug.WriteLine(i + "," + j + ":" + Neurons[i].Weights[j]);
+                if (result > maxValue)
                 {
-                    NeuronId = i;
-                    MaxValue = Result;
+                    neuronId = i;
+                    maxValue = result;
                 }
             }
-            if (NeuronId == -1) return '-';
-            return CorrespondingValues[NeuronId];
+            if (neuronId == -1) return '-';
+            Debug.WriteLine(neuronId + ":" + maxValue);
+            return CorrespondingValues[neuronId];
         }
     }
 }

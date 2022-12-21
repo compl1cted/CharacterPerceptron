@@ -5,7 +5,7 @@ namespace LetterPerceptron
         private const int MatrixColumns = 5;
         private const int MatrixRows = 7;
         private readonly Button[,] ButtonMatrix = new Button[MatrixColumns, MatrixRows];
-        private readonly Perceptron NeuralNet = new(10, MatrixColumns * MatrixRows, 1.0f);
+        private readonly Perceptron NeuralNet = new(36, MatrixColumns * MatrixRows, 0.00001f);
         public Form1()
         {
             InitializeComponent();
@@ -14,16 +14,16 @@ namespace LetterPerceptron
 
         private void TestButtonClick(object sender, EventArgs e)
         {
-            char Result = NeuralNet.Test(GetInput());
-            OutputLabel.Text = Result.ToString();
+            char result = NeuralNet.Test(GetInput());
+            OutputLabel.Text = result.ToString();
         }
 
         private void TrainButtonClick(object sender, EventArgs e)
         {
             try
             {
-                Character Char = new(char.Parse(CharacterInput.Text), GetInput());
-                NeuralNet.Train(Char);
+                Character chararacter = new(char.Parse(CharacterInput.Text), GetInput());
+                NeuralNet.Train(chararacter);
             }
             catch (FormatException exception)
             {
@@ -33,29 +33,29 @@ namespace LetterPerceptron
 
         private void AutoTrainButtonClick(object sender, EventArgs e)
         {
-            NeuralNet.AutoTrain(10000);
+            NeuralNet.AutoTrain(1000);
         }
 
         private void MatrixButtonClick(object? sender, EventArgs e)
         {
-            Button? Button = sender as Button;
-            if (Button == null) return;
-            Button.BackColor = Button.BackColor != Color.Black ? Color.Black : Color.White;
+            Button? button = sender as Button;
+            if (button == null) return;
+            button.BackColor = button.BackColor != Color.Black ? Color.Black : Color.White;
         }
 
         private int[] GetInput()
         {
-            int Counter = 0;
-            int[] MatrixValues = new int[MatrixColumns * MatrixRows];
+            int counter = 0;
+            int[] matrixValues = new int[MatrixColumns * MatrixRows];
             for (int i = 0; i < MatrixRows; i++)
             {
                 for (int j = 0; j < MatrixColumns; j++)
                 {
-                    MatrixValues[Counter] = ButtonMatrix[j, i].BackColor == Color.Black ? 1 : 0;
-                    Counter++;
+                    matrixValues[counter] = ButtonMatrix[j, i].BackColor == Color.Black ? 1 : 0;
+                    counter++;
                 }
             }
-            return MatrixValues;
+            return matrixValues;
         }
 
         private void GenerateButtonMatrix()
