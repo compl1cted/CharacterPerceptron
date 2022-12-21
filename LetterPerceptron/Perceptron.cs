@@ -1,4 +1,6 @@
-﻿namespace LetterPerceptron
+﻿using System.Diagnostics;
+
+namespace LetterPerceptron
 {
     internal class Perceptron
     {
@@ -21,11 +23,11 @@
         {
             var dataset = FileService.ReadFrom("../../../Dataset.txt");
             bool[] results = new bool[Neurons.Length];
-            for (int i = 0; i < Neurons.Length; i++)
+            for (int i = 0; i < dataset.Count; i++)
             {
                 var answer = Test(dataset[i].Signature);
                 results[i] = answer == dataset[i].Value;
-                Debug.WriteLine(dataset[i].Value + ":" + dataset[i].Signature[8]);
+                Debug.WriteLine(dataset[i].Value + ":" + "Answer: " + answer + ", Result: " + results[i]);
             }
         }
         public void AutoTrain(int TrainingIteratinos)

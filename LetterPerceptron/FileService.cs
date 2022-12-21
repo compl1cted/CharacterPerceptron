@@ -18,7 +18,7 @@ namespace LetterPerceptron
 
                     int[] Signature = new int[DatasetColumns[1].Length];
                     for (int i = 0; i < Signature.Length; i++)
-                        Signature[i] = DatasetColumns[1][i];
+                        Signature[i] = DatasetColumns[1][i] - '0';
                     characters.Add(new(Value, Signature));
                 }
                 return characters;

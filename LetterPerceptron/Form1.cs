@@ -38,13 +38,12 @@ namespace LetterPerceptron
 
         private void AutoTrainButtonClick(object sender, EventArgs e)
         {
-            NeuralNet.AutoTrain(1000);
+            NeuralNet.AutoTrain(35);
         }
 
         private void MatrixButtonClick(object? sender, EventArgs e)
         {
-            Button? button = sender as Button;
-            if (button == null) return;
+            if (sender is not Button button) return;
             button.BackColor = button.BackColor != Color.Black ? Color.Black : Color.White;
         }
 
