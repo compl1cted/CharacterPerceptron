@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace LetterPerceptron
+﻿namespace LetterPerceptron
 {
     internal class Perceptron
     {
