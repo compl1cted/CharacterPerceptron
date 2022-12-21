@@ -6,7 +6,7 @@ namespace LetterPerceptron
     {
         private readonly Neuron[] Neurons;
         private readonly float LearningRate;
-        private readonly List<Character> Dataset; //Array that represents each neuron's answer
+        private readonly List<Character> Dataset;
         public Perceptron(int NeuronsAmount, int ConnectionsPerNeuron, float _LearningRate, string DatasetFilepath)
         {
             Neurons = new Neuron[NeuronsAmount];
