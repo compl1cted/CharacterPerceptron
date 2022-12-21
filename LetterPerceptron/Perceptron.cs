@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace LetterPerceptron
+﻿namespace LetterPerceptron
 {
     internal class Perceptron
     {
@@ -48,7 +46,6 @@ namespace LetterPerceptron
             for (int i = 0; i < Neurons.Length; i++)
             {
                 float result = Neurons[i].ActivationFunction(TestData);
-                for (int j =0; j < Neurons[i].Weights.Length; j++) Debug.WriteLine(i + "," + j + ":" + Neurons[i].Weights[j]);
                 if (result > maxValue)
                 {
                     neuronId = i;
@@ -56,7 +53,6 @@ namespace LetterPerceptron
                 }
             }
             if (neuronId == -1) return '-';
-            Debug.WriteLine(neuronId + ":" + maxValue);
             return CorrespondingValues[neuronId];
         }
     }
