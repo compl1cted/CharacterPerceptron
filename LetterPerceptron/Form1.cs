@@ -31,6 +31,11 @@ namespace LetterPerceptron
             }
         }
 
+        private void AutoTestButtonClick(object sender, EventArgs e)
+        {
+            NeuralNet.AutoTest();
+        }
+
         private void AutoTrainButtonClick(object sender, EventArgs e)
         {
             NeuralNet.AutoTrain(1000);

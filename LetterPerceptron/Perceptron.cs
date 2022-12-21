@@ -19,6 +19,17 @@ namespace LetterPerceptron
             for (int i = 0; i < CorrespondingValues.Length; i++)
                 CorrespondingValues[i] = dataset[i].Value;
         }
+        public void AutoTest()
+        {
+            var dataset = FileService.ReadFrom("../../../Dataset.txt");
+            bool[] results = new bool[Neurons.Length];
+            for (int i = 0; i < Neurons.Length; i++)
+            {
+                var answer = Test(dataset[i].Signature);
+                results[i] = answer == dataset[i].Value;
+                Debug.WriteLine(dataset[i].Value + ":" + dataset[i].Signature[8]);
+            }
+        }
         public void AutoTrain(int TrainingIteratinos)
         {
             var dataset = FileService.ReadFrom("../../../Dataset.txt");
@@ -48,7 +59,6 @@ namespace LetterPerceptron
             for (int i = 0; i < Neurons.Length; i++)
             {
                 float result = Neurons[i].ActivationFunction(TestData);
-                for (int j =0; j < Neurons[i].Weights.Length; j++) Debug.WriteLine(i + "," + j + ":" + Neurons[i].Weights[j]);
                 if (result > maxValue)
                 {
                     neuronId = i;
@@ -56,7 +66,6 @@ namespace LetterPerceptron
                 }
             }
             if (neuronId == -1) return '-';
-            Debug.WriteLine(neuronId + ":" + maxValue);
             return CorrespondingValues[neuronId];
         }
     }
